@@ -19,6 +19,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
+    - name: Set image version (tag)
+      id: image_version
+      run: echo "gitsha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
     - name: login to Registry
       uses: docker/login-action@v3
       with:
@@ -26,6 +31,6 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ghcr.io/sarahabuirmeileh/express-docker:$(date +%s)
+      run: docker build . --file Dockerfile --tag ghcr.io/sarahabuirmeileh/express-docker:${{ steps.image_version.outputs.gitsha }}
     - name: Puplish docker image
-      run: docker push ghcr.io/sarahabuirmeileh/express-docker:$(date +%s)
+      run: docker push ghcr.io/sarahabuirmeileh/express-docker:${{ steps.image_version.outputs.gitsha }}
