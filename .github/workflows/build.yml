@@ -27,3 +27,5 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag ghcr.io/sarahabuirmeileh/express-docker:$(date +%s)
+    - name: Puplish docker image
+      run: docker push ghcr.io/sarahabuirmeileh/express-docker:$(date +%s)
